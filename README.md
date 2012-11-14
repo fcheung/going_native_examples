@@ -11,8 +11,9 @@ ffi_callback.rb: an example using callbacks
 
 ffi_objc.rb: an example of invoking objective C using ffi
 
-Objc::NSFoo is mapped to the NSFoo class (loaded via const missing). If you want classes outside Foundation or AppKit, adjust the ffi_lib call
-methods can be called via method missing or via objc_send for example to get the current date
+`Objc::NSFoo` is mapped to the `NSFoo` class (loaded via const missing). If you want classes outside Foundation or AppKit, adjust the ffi_lib call.
+
+Methods can be called via `method_missing` or via `objc_send` for example to get the current date
 
     Objc::NSDate.objc_send(:date)
 
