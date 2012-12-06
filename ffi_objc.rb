@@ -141,12 +141,9 @@ module Objc
   
 end
 
-#=begin
-
-#load 'ffi4.rb'
-
+=begin
 path = Objc::NSString.stringWithCString "/Users/fred/Desktop/sound.mp3", encoding: 4
 sound = Objc::NSSound.alloc.initWithContentsOfFile path, byReference: 1
 x=sound.play
 sleep 10
-#=end
+=end
