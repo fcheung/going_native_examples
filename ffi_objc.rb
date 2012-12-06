@@ -62,6 +62,7 @@ module Objc
     def method_missing method_name, *args
       if args.any?
         first_arg, hash = *args
+        hash ||= {}
         objc_send({method_name => first_arg}.merge(hash))
       else
         objc_send(method_name)
