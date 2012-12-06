@@ -92,7 +92,7 @@ module Objc
     def objc_signature_to_ffi_type(signature)
       case signature
       when '@','#',':' then :pointer
-      when 'r', 'r*' then :string
+      when '*', 'r*' then :string
       when 'c'  then :char
       when 'C'  then :uchar
       when 's'  then :short
@@ -113,7 +113,7 @@ module Objc
       case return_type
       when '@' then Object.new(pointer)
       when 'v' then nil
-      when 'r', 'r*' then pointer.read_string
+      when '*', 'r*' then pointer.read_string
       when 'c', 'C', 's', 'S', 'i', 'I', 'l', 'L', 'q', 'Q'
         repack(pointer.address, return_type)
       else
