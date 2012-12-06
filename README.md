@@ -3,9 +3,11 @@ going_native_examples
 
 Example code for my going_native_talk
 
+factorial.rb: trivial ruby inline example
+
 levenshtein.rb: using ruby inline to do levenshtein distances
 
-ffi.rb: very simple invoke a function example
+ffi_simple.rb: trivial ffi example
 
 ffi_callback.rb: an example using callbacks
 
