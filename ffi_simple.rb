@@ -1,13 +1,9 @@
 require 'ffi'
-module CF
+module C
   extend FFI::Library
-  ffi_lib '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'
-  attach_function 'CFStringCreateWithCString',
-                  [:pointer, :string, :uint32], 
-                  :pointer
-  attach_function :CFShow, 
-                  [:pointer],
-                  :void
+  ffi_lib 'c'
+  attach_function 'puts',
+                  [:string], 
+                  :int
 end
-cf_string = CF.CFStringCreateWithCString(nil, "Hello world", 0x08000100)
-CF.CFShow(cf_string)
+C.puts "Hello world"
