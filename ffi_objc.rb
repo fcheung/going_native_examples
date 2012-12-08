@@ -142,6 +142,7 @@ module Objc
 end
 
 =begin
+Objc::NSWorkspace.sharedWorkspace.openFile Objc::NSString.stringWithCString("/Users/fred/going_native_examples/ffi_objc.rb")
 path = Objc::NSString.stringWithCString "/Users/fred/Desktop/sound.mp3", encoding: 4
 sound = Objc::NSSound.alloc.initWithContentsOfFile path, byReference: 1
 x=sound.play
