@@ -14,6 +14,6 @@ long calculate_fibonacci(Object self, long n){
 
 extern "C"
 void Init_fib(){
-  Class rb_cTest = define_class("Fibonnaci").
+  Class rb_cTest = define_class("Fibonacci").
                       define_singleton_method("value", &calculate_fibonacci);
 }
