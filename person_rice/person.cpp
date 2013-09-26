@@ -14,6 +14,8 @@ class Person {
     void set_name(const std::string& new_name){
         m_name = new_name;
     }
+    void assimilate(Person other){
+    }
   private:
     std::string m_name;  
 };
@@ -24,5 +26,6 @@ void Init_person(){
     define_class<Person>("Person").
       define_constructor(Constructor<Person>()).
       define_method("name", &Person::get_name).
-      define_method("name=",&Person::set_name);
+      define_method("name=",&Person::set_name).
+      define_method("assimilate", &Person::assimilate);
 }
