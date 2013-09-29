@@ -71,7 +71,7 @@ module Objc
       @klass ||= Objc.object_getClass(self)
     end
 
-    def signature_for_selector klass, selector
+    def signature_for_selector selector
       type_buffer = FFI::MemoryPointer.new(:char, 32)
       method = Objc.class_getInstanceMethod(klass, selector)
       Objc.method_getReturnType(method, type_buffer, type_buffer.size)
@@ -85,7 +85,7 @@ module Objc
     end
     
     def invoke_selector(selector, arguments)
-      return_type_signature, arguments_signature = signature_for_selector(klass, selector)
+      return_type_signature, arguments_signature = signature_for_selector(selector)
       args_with_types = arguments_signature.zip(arguments).flatten
       case return_type_signature
       when 'f' then Objc.objc_msgSend_f(self, selector, *args_with_types)
