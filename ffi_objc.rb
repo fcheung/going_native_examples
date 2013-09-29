@@ -21,7 +21,7 @@ module Objc
   
   attach_function :method_getNumberOfArguments, [:method], :uint
   attach_function :class_getInstanceMethod, [:pointer, :selector], :method
-  attach_function :class_respondsToMethod, [:pointer, :selector], :uchar
+  attach_function :class_respondsToSelector, [:pointer, :selector], :uchar
   attach_function :method_getReturnType, [:method, :pointer, :size_t], :void
   attach_function :method_getArgumentType, [:method, :uint, :pointer, :size_t], :void
   attach_function :object_getClass, [:pointer], :pointer
@@ -39,7 +39,7 @@ module Objc
       end
       selector = Objc.sel_registerName(method_name)
       
-      if Objc.class_respondsToMethod(klass, selector).nonzero?
+      if Objc.class_respondsToSelector(klass, selector).nonzero?
         return_type_signature, arguments_signature = signature_for_selector(klass, selector)
         args_with_types = arguments_signature.zip(arguments).flatten
         case return_type_signature
