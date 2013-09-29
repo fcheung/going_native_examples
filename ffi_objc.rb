@@ -29,27 +29,11 @@ module Objc
   class Object < FFI::Pointer
     
     def objc_send(args)
-      case args
-      when Symbol,String
-        method_name = args.to_s
-        arguments = []
-      else
-        method_name = args.keys.join(':') << ':'
-        arguments = args.values 
-      end
+      method_name, arguments = extract_arguments_and_method_name args
       selector = Objc.sel_registerName(method_name)
       
       if Objc.class_respondsToSelector(klass, selector).nonzero?
-        return_type_signature, arguments_signature = signature_for_selector(klass, selector)
-        args_with_types = arguments_signature.zip(arguments).flatten
-        case return_type_signature
-        when 'f' then Objc.objc_msgSend_f(self, selector, *args_with_types)
-        when 'd' then Objc.objc_msgSend_d(self, selector, *args_with_types)
-        else
-          pointer = Objc.objc_msgSend(self, selector, *args_with_types)
-          
-          pointer && !pointer.null? ? coerce_return_value(pointer, return_type_signature) : nil
-        end
+        invoke_selector(selector, arguments)
       else 
         raise NoMethodError, "#{self} does not respond to #{method_name}"
       end
@@ -71,7 +55,18 @@ module Objc
     
     private
     
-    
+    def extract_arguments_and_method_name(args)
+      case args
+      when Symbol,String
+        method_name = args.to_s
+        arguments = []
+      else
+        method_name = args.keys.join(':') << ':'
+        arguments = args.values 
+      end
+      return method_name, arguments
+    end
+        
     def klass
       @klass ||= Objc.object_getClass(self)
     end
@@ -87,6 +82,18 @@ module Objc
         objc_signature_to_ffi_type(type_buffer.read_string)
       end
       return return_type, arguments
+    end
+    
+    def invoke_selector(selector, arguments)
+      return_type_signature, arguments_signature = signature_for_selector(klass, selector)
+      args_with_types = arguments_signature.zip(arguments).flatten
+      case return_type_signature
+      when 'f' then Objc.objc_msgSend_f(self, selector, *args_with_types)
+      when 'd' then Objc.objc_msgSend_d(self, selector, *args_with_types)
+      else
+        pointer = Objc.objc_msgSend(self, selector, *args_with_types)
+        pointer && !pointer.null? ? coerce_return_value(pointer, return_type_signature) : nil
+      end
     end
     
     def objc_signature_to_ffi_type(signature)
